@@ -22,7 +22,7 @@ public class Brand {
     private UUID id;
     private String name;
     // todo relationalship
-    @OneToMany(mappedBy = "brand")
+    @OneToMany(mappedBy = "brand",cascade = CascadeType.ALL)//brand silinince brandin model bilgileri de silinsin
     private List<Model> models;
 
 }

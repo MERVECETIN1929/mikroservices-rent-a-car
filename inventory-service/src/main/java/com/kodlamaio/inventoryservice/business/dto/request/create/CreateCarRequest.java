@@ -27,6 +27,5 @@ public class CreateCarRequest {
     @Min(value = 1)
     private double dailyPrice;
     @NotNull
-    @NotBlank
     private UUID modelId;
 }

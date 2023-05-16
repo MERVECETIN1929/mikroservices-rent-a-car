@@ -20,7 +20,8 @@ public class Model {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private String name;
-    @OneToMany(mappedBy = "model")
+
+    @OneToMany(mappedBy = "model", cascade = CascadeType.ALL)// cascade model silinince carlarda silinsin
     private List<Car> cars;
 
     @ManyToOne

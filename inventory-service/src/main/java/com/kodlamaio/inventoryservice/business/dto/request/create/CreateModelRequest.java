@@ -20,6 +20,6 @@ public class CreateModelRequest {
     @Size(min = 2, max = 20)
     private String name;
     @NotNull
-    @NotBlank
+
     private UUID brandId;
 }

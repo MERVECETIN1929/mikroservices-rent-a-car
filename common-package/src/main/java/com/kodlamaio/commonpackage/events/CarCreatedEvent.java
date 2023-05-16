@@ -1,0 +1,24 @@
+package com.kodlamaio.commonpackage.events;
+
+import jakarta.annotation.security.DenyAll;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.util.UUID;
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+public class CarCreatedEvent {
+    private UUID carId;
+    private UUID brandId;
+    private UUID modelId;
+    private int modelYear;
+    private String plate;
+    private String state;
+    private double dailyPrice;
+    private String modelName;
+    private String modelBrandName;
+}
