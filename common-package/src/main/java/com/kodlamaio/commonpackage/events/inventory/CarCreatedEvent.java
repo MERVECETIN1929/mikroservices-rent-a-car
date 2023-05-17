@@ -1,4 +1,4 @@
-package com.kodlamaio.commonpackage.events;
+package com.kodlamaio.commonpackage.events.inventory;
 
 import jakarta.annotation.security.DenyAll;
 import lombok.AllArgsConstructor;

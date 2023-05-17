@@ -8,4 +8,7 @@ public class Paths {
     public class Filter{
         public static final String ServiceBasePackage="com.kodlamaio.filterservice";
     }
+    public class Rental{
+        public static final String ServiceBasePackage="com.kodlamaio.rentalservice";
+    }
 }

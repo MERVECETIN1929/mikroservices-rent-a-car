@@ -1,7 +1,7 @@
 package com.kodlamaio.inventoryservice.business.concretes;
 
-import com.kodlamaio.commonpackage.events.CarCreatedEvent;
-import com.kodlamaio.commonpackage.events.CarDeletedEvent;
+import com.kodlamaio.commonpackage.events.inventory.CarCreatedEvent;
+import com.kodlamaio.commonpackage.events.inventory.CarDeletedEvent;
 import com.kodlamaio.commonpackage.utils.mappers.ModelMapperService;
 import com.kodlamaio.inventoryservice.business.abstracts.CarService;
 import com.kodlamaio.inventoryservice.business.dto.request.create.CreateCarRequest;
@@ -16,7 +16,6 @@ import com.kodlamaio.inventoryservice.entities.Car;
 import com.kodlamaio.inventoryservice.entities.enums.State;
 import com.kodlamaio.inventoryservice.repository.CarRepository;
 import lombok.AllArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -69,6 +68,18 @@ public class CarManager implements CarService {
         repository.deleteById(id);
         producer.sendMessage(new CarDeletedEvent(id));
     }
+
+    @Override
+    public void checkIfCarAvailable(UUID id) {
+        rules.checkIfCarExists(id);
+        rules.checkCarAvailability(id);
+    }
+
+    @Override
+    public void changeStateByCarId(State state, UUID id) {
+        repository.changeStateByCarId(state,id);
+    }
+
     public void sendKafkaCarCreatedEvent(Car car){
         var event=mapper.forResponse().map(car, CarCreatedEvent.class);
         producer.sendMessage(event);

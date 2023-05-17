@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("api/Brand")
+@RequestMapping("api/brands")
 @AllArgsConstructor
 public class BrandController {
     private final BrandService service;

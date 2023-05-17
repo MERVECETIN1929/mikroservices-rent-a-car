@@ -1,9 +1,8 @@
 package com.kodlamaio.inventoryservice.business.concretes;
 
-import com.kodlamaio.commonpackage.events.BrandDeletedEvent;
+import com.kodlamaio.commonpackage.events.inventory.BrandDeletedEvent;
 import com.kodlamaio.commonpackage.utils.mappers.ModelMapperService;
 import com.kodlamaio.inventoryservice.business.abstracts.BrandService;
-import com.kodlamaio.inventoryservice.business.abstracts.ModelService;
 import com.kodlamaio.inventoryservice.business.dto.request.create.CreateBrandRequest;
 import com.kodlamaio.inventoryservice.business.dto.request.update.UpdateBrandRequest;
 import com.kodlamaio.inventoryservice.business.dto.response.create.CreateBrandResponse;

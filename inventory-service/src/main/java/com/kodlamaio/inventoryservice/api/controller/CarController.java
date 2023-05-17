@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("api/car")
+@RequestMapping("api/cars")
 @AllArgsConstructor
 public class CarController {
     private final CarService service;
@@ -43,4 +43,9 @@ public class CarController {
     public void delete(@PathVariable UUID id){
         service.delete(id);
     }
+    @GetMapping("/check-car-available/{id}")
+    public void checkIfCarAvailable(@PathVariable UUID id){
+        service.checkIfCarAvailable(id);
+    }
+
 }
