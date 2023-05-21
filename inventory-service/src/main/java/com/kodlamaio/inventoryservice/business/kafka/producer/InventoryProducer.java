@@ -1,5 +1,6 @@
 package com.kodlamaio.inventoryservice.business.kafka.producer;
 
+import com.kodlamaio.commonpackage.events.Event;
 import com.kodlamaio.commonpackage.events.inventory.BrandDeletedEvent;
 import com.kodlamaio.commonpackage.events.inventory.CarCreatedEvent;
 import com.kodlamaio.commonpackage.events.inventory.CarDeletedEvent;
@@ -22,6 +23,14 @@ import org.springframework.stereotype.Service;
 public class InventoryProducer {
     private final KafkaTemplate<String,Object>  kafkaTemplate;
     private static Logger LOGGER= LoggerFactory.getLogger(InventoryProducer.class);
+    public <T extends Event> void sendMessage(T event, String topic){
+        log.info(String.format("%s event =>  %s",topic,event.toString()));
+        //log.info(String.format("car created event =>  %s",event.toString()));
+        Message<T> message= MessageBuilder.withPayload(event)
+                .setHeader(KafkaHeaders.TOPIC,topic)
+                .build();
+        kafkaTemplate.send(message);
+    }
     public void sendMessage(CarCreatedEvent event){
         LOGGER.info(String.format("car created event =>  %s",event.toString()));
         //log.info(String.format("car created event =>  %s",event.toString()));

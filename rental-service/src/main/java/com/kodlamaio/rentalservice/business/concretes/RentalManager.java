@@ -1,6 +1,7 @@
 package com.kodlamaio.rentalservice.business.concretes;
 
 import com.kodlamaio.commonpackage.events.rental.RentalCreatedEvent;
+import com.kodlamaio.commonpackage.kafka.producer.KafkaProducer;
 import com.kodlamaio.commonpackage.utils.mappers.ModelMapperService;
 
 import com.kodlamaio.rentalservice.api.clients.CarClient;
@@ -29,7 +30,8 @@ public class RentalManager implements RentalService {
     private final ModelMapperService mapper;
     private final RentalBusinessRules rules;
     private final CarClient carClient;
-    private final RentalProducer producer;
+    //private final RentalProducer producer;
+    private final KafkaProducer producer;
     @Override
     public List<GetAllRentalsResponse> getAll() {
         var rentals=repository.findAll();
@@ -47,8 +49,8 @@ public class RentalManager implements RentalService {
 
     @Override
     public CreateRentalResponse add(CreateRentalRequest request) {
-        carClient.checkIfCarAvailable(request.getCarId());
-
+        //carClient.checkIfCarAvailable(request.getCarId());
+        rules.ensureCarIsAvailable(request.getCarId());
         var rental=mapper.forRequest().map(request, Rental.class);
         rental.setId(null);
         rental.setTotalPrice(getTotalPrice(rental));
@@ -78,6 +80,6 @@ public class RentalManager implements RentalService {
         return rental.getDailyPrice()*rental.getRentedForDays();
     }
     public void sentKafkaRentalEvent(UUID carId){
-        producer.sendMessage(new RentalCreatedEvent(carId));
+        producer.sendMessage(new RentalCreatedEvent(carId),"rental-created");
     }
 }

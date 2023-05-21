@@ -1,6 +1,5 @@
-package com.kodlamaio.commonpackage.events.rental;
+package com.kodlamaio.maintenanceservice.business.dto.response.update;
 
-import com.kodlamaio.commonpackage.events.Event;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,8 +9,13 @@ import java.util.UUID;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
 @Setter
-public class RentalCreatedEvent implements Event {
+@Getter
+public class UpdateMaintenanceResponse {
+
     private UUID carId;
+
+    private double cost;
+
+    private String description;
 }
