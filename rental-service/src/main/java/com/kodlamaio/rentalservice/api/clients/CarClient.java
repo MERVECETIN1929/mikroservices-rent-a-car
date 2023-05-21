@@ -1,7 +1,6 @@
 package com.kodlamaio.rentalservice.api.clients;
 
-import com.kodlamaio.commonpackage.utils.dto.ClientResponse;
-import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import com.kodlamaio.commonpackage.utils.dto.response.ClientResponse;
 import io.github.resilience4j.retry.annotation.Retry;
 import org.springframework.cloud.openfeign.FeignClient;
 

@@ -69,17 +69,17 @@ public class MaintenanceManager implements MaintenanceService {
 
     @Override
     public void delete(UUID id) {
-        var maintenance=mapper.forRequest().map(getById(id),Maintenance.class);
         rules.existsMaintenanceById(id);
+        var maintenance=mapper.forRequest().map(getById(id),Maintenance.class);
         repository.deleteById(id);
-        checkSendMaintenanceDeleteEvent(maintenance);
+        checkAndSendMaintenanceDeleteEvent(maintenance);
 
     }
 
     @Override
     public void returnTheCarFromMaintenance(UUID carId) {
         rules.checkCarInMaintenanceAndRepairedFalse(carId);
-        Maintenance maintenance=repository.findMaintenanceByCarIdAndRepairedFalse(carId);
+        Maintenance maintenance=repository.findMaintenanceByCarIdAndIsRepairedFalse(carId);
         maintenance.setDateOut(LocalDateTime.now());
         maintenance.setRepaired(true);
         repository.save(maintenance);
@@ -88,10 +88,9 @@ public class MaintenanceManager implements MaintenanceService {
     private void sendKafkaMaintenanceEvent(Event event, String topic){
         producer.sendMessage(event,topic);
     }
-    private void checkSendMaintenanceDeleteEvent(Maintenance maintenance){
-
+    private void checkAndSendMaintenanceDeleteEvent(Maintenance maintenance){
         if(!maintenance.isRepaired()){
-            sendKafkaMaintenanceEvent(new MaintenanceDeleteEvent(id),"maintenance-deleted");
+            sendKafkaMaintenanceEvent(new MaintenanceDeleteEvent(maintenance.getCarId()),"maintenance-deleted");
         }
     }
 }

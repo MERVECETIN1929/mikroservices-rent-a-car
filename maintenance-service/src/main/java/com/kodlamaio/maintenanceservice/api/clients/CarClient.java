@@ -1,6 +1,6 @@
 package com.kodlamaio.maintenanceservice.api.clients;
 
-import com.kodlamaio.commonpackage.utils.dto.ClientResponse;
+import com.kodlamaio.commonpackage.utils.dto.response.ClientResponse;
 import io.github.resilience4j.retry.annotation.Retry;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;

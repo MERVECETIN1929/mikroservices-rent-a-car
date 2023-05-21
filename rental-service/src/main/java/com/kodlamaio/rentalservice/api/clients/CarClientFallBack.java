@@ -1,10 +1,8 @@
 package com.kodlamaio.rentalservice.api.clients;
 
-import com.kodlamaio.commonpackage.utils.dto.ClientResponse;
+import com.kodlamaio.commonpackage.utils.dto.response.ClientResponse;
 import com.kodlamaio.commonpackage.utils.exceptions.BusinessException;
-import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.annotations.Comment;
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;

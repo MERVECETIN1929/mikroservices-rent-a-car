@@ -1,6 +1,6 @@
 package com.kodlamaio.maintenanceservice.business.rules;
 
-import com.kodlamaio.commonpackage.utils.dto.ClientResponse;
+import com.kodlamaio.commonpackage.utils.dto.response.ClientResponse;
 import com.kodlamaio.commonpackage.utils.exceptions.BusinessException;
 import com.kodlamaio.maintenanceservice.api.clients.CarClient;
 import com.kodlamaio.maintenanceservice.repository.MaintenanceRepository;
@@ -26,7 +26,7 @@ public class MaintenanceBusinessRules {
         }
     }
     public void checkCarInMaintenanceAndRepairedFalse(UUID carId){
-        if(!maintenanceRepository.existsMaintenanceByCarIdAndRepairedFalse(carId)){
+        if(!maintenanceRepository.existsMaintenanceByCarIdAndIsRepairedFalse(carId)){
             throw new BusinessException("Car is not maintenance");
         }
     }

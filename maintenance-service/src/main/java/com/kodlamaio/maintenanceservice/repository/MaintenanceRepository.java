@@ -7,7 +7,7 @@ import java.util.UUID;
 
 public interface MaintenanceRepository extends JpaRepository<Maintenance, UUID> {
     boolean existsMaintenanceById(UUID id);
-    Maintenance findMaintenanceByCarIdAndRepairedFalse(UUID carId);
+    Maintenance findMaintenanceByCarIdAndIsRepairedFalse(UUID carId);
 
-    boolean existsMaintenanceByCarIdAndRepairedFalse(UUID carId);
+    boolean existsMaintenanceByCarIdAndIsRepairedFalse(UUID carId);
 }

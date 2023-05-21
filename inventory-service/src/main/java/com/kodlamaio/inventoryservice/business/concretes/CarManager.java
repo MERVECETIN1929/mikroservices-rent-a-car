@@ -3,7 +3,7 @@ package com.kodlamaio.inventoryservice.business.concretes;
 import com.kodlamaio.commonpackage.events.inventory.CarCreatedEvent;
 import com.kodlamaio.commonpackage.events.inventory.CarDeletedEvent;
 import com.kodlamaio.commonpackage.kafka.producer.KafkaProducer;
-import com.kodlamaio.commonpackage.utils.dto.ClientResponse;
+import com.kodlamaio.commonpackage.utils.dto.response.ClientResponse;
 import com.kodlamaio.commonpackage.utils.exceptions.BusinessException;
 import com.kodlamaio.commonpackage.utils.mappers.ModelMapperService;
 import com.kodlamaio.inventoryservice.business.abstracts.CarService;
@@ -13,7 +13,6 @@ import com.kodlamaio.inventoryservice.business.dto.response.create.CreateCarResp
 import com.kodlamaio.inventoryservice.business.dto.response.get.GetAllCarsResponse;
 import com.kodlamaio.inventoryservice.business.dto.response.get.GetCarResponse;
 import com.kodlamaio.inventoryservice.business.dto.response.update.UpdateCarResponse;
-import com.kodlamaio.inventoryservice.business.kafka.producer.InventoryProducer;
 import com.kodlamaio.inventoryservice.business.rules.CarBusinessRules;
 import com.kodlamaio.inventoryservice.entities.Car;
 import com.kodlamaio.inventoryservice.entities.enums.State;

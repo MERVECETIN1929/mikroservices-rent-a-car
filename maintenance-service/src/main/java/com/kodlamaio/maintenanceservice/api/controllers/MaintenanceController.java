@@ -1,6 +1,5 @@
 package com.kodlamaio.maintenanceservice.api.controllers;
 
-import com.kodlamaio.commonpackage.utils.dto.ClientResponse;
 import com.kodlamaio.maintenanceservice.business.abstracts.MaintenanceService;
 import com.kodlamaio.maintenanceservice.business.dto.request.create.CreateMaintenanceRequest;
 import com.kodlamaio.maintenanceservice.business.dto.request.update.UpdateMaintenanceRequest;

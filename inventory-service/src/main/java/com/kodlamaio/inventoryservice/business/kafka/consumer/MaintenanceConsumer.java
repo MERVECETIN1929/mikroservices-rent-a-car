@@ -3,7 +3,6 @@ package com.kodlamaio.inventoryservice.business.kafka.consumer;
 import com.kodlamaio.commonpackage.events.maintenance.MaintenanceCreateEvent;
 import com.kodlamaio.commonpackage.events.maintenance.MaintenanceDeleteEvent;
 import com.kodlamaio.commonpackage.events.maintenance.MaintenanceReturnEvent;
-import com.kodlamaio.commonpackage.events.rental.RentalCreatedEvent;
 import com.kodlamaio.inventoryservice.business.abstracts.CarService;
 import com.kodlamaio.inventoryservice.entities.enums.State;
 import lombok.AllArgsConstructor;
@@ -28,7 +27,7 @@ public class MaintenanceConsumer {
     }
     @KafkaListener(topics = "maintenance-return",groupId = "inventory-maintenance-return")
     public void consume(MaintenanceReturnEvent event){
-        carService.changeStateByCarId(State.Maintenance,event.getCarId());
+        carService.changeStateByCarId(State.Available,event.getCarId());
         log.info("maintenance return consume info {}",event);
     }
 }

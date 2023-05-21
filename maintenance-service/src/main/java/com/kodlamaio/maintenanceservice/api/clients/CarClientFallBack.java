@@ -1,6 +1,6 @@
 package com.kodlamaio.maintenanceservice.api.clients;
 
-import com.kodlamaio.commonpackage.utils.dto.ClientResponse;
+import com.kodlamaio.commonpackage.utils.dto.response.ClientResponse;
 import com.kodlamaio.commonpackage.utils.exceptions.BusinessException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

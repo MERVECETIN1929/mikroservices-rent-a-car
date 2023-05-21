@@ -1,6 +1,6 @@
 package com.kodlamaio.inventoryservice.business.abstracts;
 
-import com.kodlamaio.commonpackage.utils.dto.ClientResponse;
+import com.kodlamaio.commonpackage.utils.dto.response.ClientResponse;
 import com.kodlamaio.inventoryservice.business.dto.request.create.CreateCarRequest;
 import com.kodlamaio.inventoryservice.business.dto.request.update.UpdateCarRequest;
 import com.kodlamaio.inventoryservice.business.dto.response.create.CreateCarResponse;

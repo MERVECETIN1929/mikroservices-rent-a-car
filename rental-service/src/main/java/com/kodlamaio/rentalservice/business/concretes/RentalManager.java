@@ -2,6 +2,7 @@ package com.kodlamaio.rentalservice.business.concretes;
 
 import com.kodlamaio.commonpackage.events.rental.RentalCreatedEvent;
 import com.kodlamaio.commonpackage.kafka.producer.KafkaProducer;
+import com.kodlamaio.commonpackage.utils.dto.request.PaymentRentalRequest;
 import com.kodlamaio.commonpackage.utils.mappers.ModelMapperService;
 
 import com.kodlamaio.rentalservice.api.clients.CarClient;
@@ -12,7 +13,6 @@ import com.kodlamaio.rentalservice.business.dto.response.create.CreateRentalResp
 import com.kodlamaio.rentalservice.business.dto.response.get.GetAllRentalsResponse;
 import com.kodlamaio.rentalservice.business.dto.response.get.GetRentalResponse;
 import com.kodlamaio.rentalservice.business.dto.response.update.UpdateRentalResponse;
-import com.kodlamaio.rentalservice.business.kafka.producer.RentalProducer;
 import com.kodlamaio.rentalservice.business.rules.RentalBusinessRules;
 import com.kodlamaio.rentalservice.entities.Rental;
 import com.kodlamaio.rentalservice.repository.RentalRepository;
@@ -54,6 +54,9 @@ public class RentalManager implements RentalService {
         var rental=mapper.forRequest().map(request, Rental.class);
         rental.setId(null);
         rental.setTotalPrice(getTotalPrice(rental));
+        PaymentRentalRequest rentalRequest=mapper.forRequest().map(request.getPayment(),PaymentRentalRequest.class);
+        rentalRequest.setPrice(rental.getTotalPrice());
+        rules.makeRentalPayment(rentalRequest);
         repository.save(rental);
         sentKafkaRentalEvent(request.getCarId());
         var response=mapper.forResponse().map(rental, CreateRentalResponse.class);

@@ -11,11 +11,7 @@ import java.util.UUID;
 @Setter
 @Getter
 public class UpdateMaintenanceRequest {
-
     private UUID carId;
-
-
     private double cost;
-
     private String description;
 }
