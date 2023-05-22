@@ -19,6 +19,7 @@ import com.kodlamaio.rentalservice.repository.RentalRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,8 +30,6 @@ public class RentalManager implements RentalService {
     private final RentalRepository repository;
     private final ModelMapperService mapper;
     private final RentalBusinessRules rules;
-    private final CarClient carClient;
-    //private final RentalProducer producer;
     private final KafkaProducer producer;
     @Override
     public List<GetAllRentalsResponse> getAll() {
@@ -51,15 +50,16 @@ public class RentalManager implements RentalService {
     public CreateRentalResponse add(CreateRentalRequest request) {
         //carClient.checkIfCarAvailable(request.getCarId());
         rules.ensureCarIsAvailable(request.getCarId());
-        var rental=mapper.forRequest().map(request, Rental.class);
-        rental.setId(null);
+        Rental rental=mapper.forRequest().map(request, Rental.class);
+        rental.setRentedAt(LocalDate.now());
+        rental.setId(UUID.randomUUID());
         rental.setTotalPrice(getTotalPrice(rental));
         PaymentRentalRequest rentalRequest=mapper.forRequest().map(request.getPayment(),PaymentRentalRequest.class);
         rentalRequest.setPrice(rental.getTotalPrice());
         rules.makeRentalPayment(rentalRequest);
-        repository.save(rental);
+        var save=repository.save(rental);
         sentKafkaRentalEvent(request.getCarId());
-        var response=mapper.forResponse().map(rental, CreateRentalResponse.class);
+        var response=mapper.forResponse().map(save, CreateRentalResponse.class);
         return response;
     }
 

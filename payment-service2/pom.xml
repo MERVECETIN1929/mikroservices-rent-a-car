@@ -32,10 +32,7 @@
             <artifactId>common-package</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
-        <dependency>
-            <groupId>org.glassfish.jersey.core</groupId>
-            <artifactId>jersey-common</artifactId>
-        </dependency>
+
     </dependencies>
 
     <build>

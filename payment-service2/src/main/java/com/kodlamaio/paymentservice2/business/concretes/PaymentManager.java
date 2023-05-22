@@ -75,7 +75,7 @@ public class PaymentManager implements PaymentService {
         try{
             ensureCheckvalidateIfTrueCard(payment);
             var validatePayment=repository.findPaymentByCardNumber(request.getCardNumber());
-            moneyTransaction(request.getPrice(),payment);
+            moneyTransaction(request.getPrice(),validatePayment);
             clientResponse.setSuccess(true);
 
         }
@@ -85,9 +85,9 @@ public class PaymentManager implements PaymentService {
         }
         return clientResponse;
     }
-// payment
+// todo payment-rules
 private void ensureCheckvalidateIfTrueCard(Payment request){
-    var result=repository.validateCard(request.getCardNumber(),request.getCvv(),request.getYear(),request.getMonth(), request.getCardHolderName());
+    boolean result=repository.existsByCardNumberAndCardHolderNameAndYearAndMonthAndCvv(request.getCardNumber(),request.getCardHolderName(),request.getYear(),request.getMonth(), request.getCvv());
     if(!result){
         throw new BusinessException("card  not validate");
     }
@@ -97,6 +97,7 @@ private void moneyTransaction(double price,Payment payment){
             throw new BusinessException("money not enought");
         }
         payment.setBalance(payment.getBalance() - price);
+        payment.setId(payment.getId());
         repository.save(payment);}
 }
 

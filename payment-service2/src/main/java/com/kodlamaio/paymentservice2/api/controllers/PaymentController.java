@@ -9,7 +9,6 @@ import com.kodlamaio.paymentservice2.business.dto.response.create.CreatePaymentR
 import com.kodlamaio.paymentservice2.business.dto.response.get.GetAllPaymentResponse;
 import com.kodlamaio.paymentservice2.business.dto.response.get.GetPaymentResponse;
 import com.kodlamaio.paymentservice2.business.dto.response.update.UpdatePaymentResponse;
-import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

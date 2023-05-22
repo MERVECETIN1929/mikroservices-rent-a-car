@@ -1,6 +1,6 @@
 spring:
   application:
-    name: PAYMENT-SERVICE
+    name: PAYMENT-SERVICE2
   datasource:
     username: postgres
     password: '123456'

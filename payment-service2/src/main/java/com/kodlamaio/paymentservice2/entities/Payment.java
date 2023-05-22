@@ -20,7 +20,6 @@ public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-    @CreditCardNumber
     private String cardNumber;
     private String cvv;
     private String year;
