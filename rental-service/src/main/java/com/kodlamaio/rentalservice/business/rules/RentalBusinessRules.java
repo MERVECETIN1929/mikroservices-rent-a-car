@@ -1,6 +1,7 @@
 package com.kodlamaio.rentalservice.business.rules;
 
 
+import com.kodlamaio.commonpackage.utils.dto.request.Payment;
 import com.kodlamaio.commonpackage.utils.dto.request.PaymentRentalRequest;
 import com.kodlamaio.commonpackage.utils.exceptions.BusinessException;
 
@@ -39,4 +40,5 @@ public class RentalBusinessRules {
             throw new BusinessException(response.getMessage());
         }
     }
+
 }

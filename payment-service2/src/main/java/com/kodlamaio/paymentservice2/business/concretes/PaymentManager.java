@@ -29,7 +29,6 @@ public class PaymentManager implements PaymentService {
     private final PaymentRepository repository;
     private final PaymentBusinessRules rules;
     private final ModelMapperService mapper;
-    private final KafkaProducer producer;
     @Override
     public List<GetAllPaymentResponse> getAll() {
         var payments=repository.findAll();
@@ -64,7 +63,6 @@ public class PaymentManager implements PaymentService {
     @Override
     public void delete(UUID id) {
       repository.deleteById(id);
-
     }
 
     @Override
@@ -73,11 +71,13 @@ public class PaymentManager implements PaymentService {
         ClientResponse clientResponse=new ClientResponse();
         Payment payment=mapper.forRequest().map(request,Payment.class);
         try{
-            ensureCheckvalidateIfTrueCard(payment);
+            rules.ensureCheckValidateIfTrueCard(payment);
             var validatePayment=repository.findPaymentByCardNumber(request.getCardNumber());
-            moneyTransaction(request.getPrice(),validatePayment);
+            rules.isBalanceEnough(request.getPrice(),validatePayment);
+            validatePayment.setBalance(validatePayment.getBalance() - request.getPrice());
+            validatePayment.setId(payment.getId());
+            repository.save(payment);
             clientResponse.setSuccess(true);
-
         }
         catch (Exception e){
             clientResponse.setSuccess(false);
@@ -85,19 +85,8 @@ public class PaymentManager implements PaymentService {
         }
         return clientResponse;
     }
-// todo payment-rules
-private void ensureCheckvalidateIfTrueCard(Payment request){
-    boolean result=repository.existsByCardNumberAndCardHolderNameAndYearAndMonthAndCvv(request.getCardNumber(),request.getCardHolderName(),request.getYear(),request.getMonth(), request.getCvv());
-    if(!result){
-        throw new BusinessException("card  not validate");
-    }
-}
-private void moneyTransaction(double price,Payment payment){
-        if(payment.getBalance()<price){
-            throw new BusinessException("money not enought");
-        }
-        payment.setBalance(payment.getBalance() - price);
-        payment.setId(payment.getId());
-        repository.save(payment);}
+
+
+
 }
 

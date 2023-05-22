@@ -9,5 +9,5 @@ public class CommonPackageApplication {
     public static void main(String[] args) {
         SpringApplication.run(CommonPackageApplication.class, args);
     }
-//todo properties to yml
+
 }
