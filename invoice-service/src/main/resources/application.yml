@@ -1,9 +1,8 @@
 spring:
   application:
-    name: API-GATEWAY
+    name: INVOICE-SERVICE
   cloud:
     config:
-      profile: dev
+      profile: prod
   config:
     import: optional:configserver:http://localhost:8888
-
