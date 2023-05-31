@@ -25,15 +25,16 @@ services:
     container_name: inventorydb-t2
     image: mysql
     ports:
-      - "3306-3306"
+      - "3306:3306"
     environment:
       - MYSQL_ROOT_PASSWORD=12345
-      - MYSQL_TSC_PORT=3306
+      - MYSQL_TCP_PORT=3306
       - VIRTUAL_PORT=3306
     volumes:
-      - inventorydb_data:/data/db/
+      - inventorydb:/data/db
+
 volumes:
   kafka_data:
   mongodb_data:
   mongodb_data2:
-  inventorydb_data:
+  inventorydb:

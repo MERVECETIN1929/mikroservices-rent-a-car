@@ -1,5 +1,6 @@
 package com.kodlamaio.rentalservice.api.clients;
 
+import com.kodlamaio.commonpackage.utils.dto.response.ClientCarResponse;
 import com.kodlamaio.commonpackage.utils.dto.response.ClientResponse;
 import com.kodlamaio.commonpackage.utils.exceptions.BusinessException;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +20,12 @@ public class CarClientFallBack implements CarClient{
     @Override
 
     public ClientResponse checkIfCarAvailable(UUID carId)  {
+        log.info("inventory service is down");
+        throw new BusinessException("INVENTORY SERVICE NOT AVAILABLE RIGHT NOW");
+    }
+
+    @Override
+    public ClientCarResponse getCarById(UUID carId) {
         log.info("inventory service is down");
         throw new BusinessException("INVENTORY SERVICE NOT AVAILABLE RIGHT NOW");
     }

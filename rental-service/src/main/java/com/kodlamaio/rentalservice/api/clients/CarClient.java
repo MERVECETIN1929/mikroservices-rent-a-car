@@ -1,5 +1,6 @@
 package com.kodlamaio.rentalservice.api.clients;
 
+import com.kodlamaio.commonpackage.utils.dto.response.ClientCarResponse;
 import com.kodlamaio.commonpackage.utils.dto.response.ClientResponse;
 import io.github.resilience4j.retry.annotation.Retry;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -16,5 +17,7 @@ public interface CarClient {
     @Retry(name="default")
     //@CircuitBreaker(name="inventory-service",fallbackMethod = "checkIfCarAvailable")
     @GetMapping(value="api/cars/check-car-available/{carId}")
-    ClientResponse checkIfCarAvailable(@PathVariable UUID carId) ;
+    ClientResponse checkIfCarAvailable(@PathVariable UUID carId);
+    @GetMapping(value="api/cars/{carId}")
+    ClientCarResponse getCarById(@PathVariable UUID carId);
 }

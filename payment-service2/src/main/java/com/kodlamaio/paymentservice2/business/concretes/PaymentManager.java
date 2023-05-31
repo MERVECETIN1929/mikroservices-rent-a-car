@@ -1,11 +1,10 @@
 package com.kodlamaio.paymentservice2.business.concretes;
 
 
-import com.kodlamaio.commonpackage.kafka.producer.KafkaProducer;
+
 
 import com.kodlamaio.commonpackage.utils.dto.request.PaymentRentalRequest;
 import com.kodlamaio.commonpackage.utils.dto.response.ClientResponse;
-import com.kodlamaio.commonpackage.utils.exceptions.BusinessException;
 import com.kodlamaio.commonpackage.utils.mappers.ModelMapperService;
 import com.kodlamaio.paymentservice2.business.abstracts.PaymentService;
 import com.kodlamaio.paymentservice2.business.dto.request.create.CreatePaymentRequest;
@@ -46,7 +45,7 @@ public class PaymentManager implements PaymentService {
 
     @Override
     public CreatePaymentResponse add(CreatePaymentRequest request) {
-      var payment=mapper.forRequest().map(request, com.kodlamaio.paymentservice2.entities.Payment.class);
+      var payment=mapper.forRequest().map(request, Payment.class);
       payment.setId(UUID.randomUUID());
       repository.save(payment);
       return mapper.forResponse().map(payment, CreatePaymentResponse.class);
@@ -54,7 +53,7 @@ public class PaymentManager implements PaymentService {
 
     @Override
     public UpdatePaymentResponse update(UUID id, UpdatePaymentRequest request) {
-        var payment=mapper.forRequest().map(request, com.kodlamaio.paymentservice2.entities.Payment.class);
+        var payment=mapper.forRequest().map(request, Payment.class);
         payment.setId(id);
         repository.save(payment);
         return mapper.forResponse().map(payment, UpdatePaymentResponse.class);

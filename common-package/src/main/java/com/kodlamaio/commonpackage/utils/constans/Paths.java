@@ -17,4 +17,7 @@ public class Paths {
     public class Payment{
         public static final String ServiceBasePackage="com.kodlamaio.paymentservice2";
     }
+    public class Invoice{
+        public static final String ServiceBasePackage="com.kodlamaio.invoiceservice";
+    }
 }
