@@ -11,6 +11,12 @@ import com.kodlamaio.inventoryservice.business.dto.response.update.UpdateCarResp
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,11 +28,15 @@ import java.util.UUID;
 public class CarController {
     private final CarService service;
     @GetMapping
+    // secured preauthorized postAuthorize
+    //@Secured("ROLE_admin")
+    @PreAuthorize("hasAnyRole('user','admin')")//Spel
     public List<GetAllCarsResponse> getAll(){
         return service.getAll();
     }
     @GetMapping("/{id}")
-    public GetCarResponse getById(@PathVariable  UUID id){
+    @PostAuthorize("hasRole('admin') || returnObject.modelYear == 2019")
+    public GetCarResponse getById(@PathVariable  UUID id, @AuthenticationPrincipal Jwt jwt){
         return service.getById(id);
     }
     @PutMapping("/{id}")

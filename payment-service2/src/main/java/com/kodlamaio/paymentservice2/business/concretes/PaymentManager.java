@@ -70,16 +70,26 @@ public class PaymentManager implements PaymentService {
         ClientResponse clientResponse=new ClientResponse();
         Payment payment=mapper.forRequest().map(request,Payment.class);
         try{
+
             rules.ensureCheckValidateIfTrueCard(payment);
+
             var validatePayment=repository.findPaymentByCardNumber(request.getCardNumber());
+
             rules.isBalanceEnough(request.getPrice(),validatePayment);
+
             validatePayment.setBalance(validatePayment.getBalance() - request.getPrice());
-            validatePayment.setId(payment.getId());
-            repository.save(payment);
+
+            validatePayment.setId(validatePayment.getId());
+
+            repository.save(validatePayment);
+
             clientResponse.setSuccess(true);
+
         }
-        catch (Exception e){
+        catch(Exception e){
+
             clientResponse.setSuccess(false);
+
             clientResponse.setMessage(e.getMessage());
         }
         return clientResponse;
