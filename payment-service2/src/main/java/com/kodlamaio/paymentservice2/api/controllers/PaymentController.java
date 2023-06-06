@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.UUID;
 @AllArgsConstructor
 @RestController
-@RequestMapping("api/payments")
+@RequestMapping("/api/payments")
 public class PaymentController {
     private final PaymentService service;
     @GetMapping
@@ -43,7 +43,7 @@ public class PaymentController {
     public void delete(@PathVariable UUID id){
         service.delete(id);
     }
-    @PostMapping("/make-payment")
+    @PostMapping("/check")
     public ClientResponse makePayment(@RequestBody PaymentRentalRequest rentalRequest){
         return service.makePayment(rentalRequest);
     }

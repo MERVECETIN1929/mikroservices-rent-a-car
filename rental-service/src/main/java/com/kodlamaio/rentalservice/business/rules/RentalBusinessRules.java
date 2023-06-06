@@ -28,15 +28,17 @@ public class RentalBusinessRules {
             throw new BusinessException("RENTAL_NOT_EXISTS");
         }
     }
-    public void ensureCarIsAvailable(UUID id){
-        var response=carClient.checkIfCarAvailable(id);
+    public void ensureCarIsAvailable(UUID carId){
+        var response=carClient.checkIfCarAvailable(carId);
         if(!response.isSuccess()){
+            //System.err.println("ben geldim inventory");
             throw new BusinessException(response.getMessage());
         }
     }
     public void makeRentalPayment(PaymentRentalRequest request){
         var response= paymentClient.makePayment(request);
         if(!response.isSuccess()){
+            //System.err.println("ben geldim payment");
             throw new BusinessException(response.getMessage());
         }
     }

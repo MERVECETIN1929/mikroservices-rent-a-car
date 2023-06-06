@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("api/cars")
+@RequestMapping("/api/cars")
 @AllArgsConstructor
 public class CarController {
     private final CarService service;
@@ -35,7 +35,7 @@ public class CarController {
         return service.getAll();
     }
     @GetMapping("/{id}")
-    @PostAuthorize("hasRole('admin') || returnObject.modelYear == 2019")
+    //@PostAuthorize("hasRole('admin') || returnObject.modelYear == 2019")
     public GetCarResponse getById(@PathVariable  UUID id, @AuthenticationPrincipal Jwt jwt){
         return service.getById(id);
     }
@@ -54,9 +54,9 @@ public class CarController {
     public void delete(@PathVariable UUID id){
         service.delete(id);
     }
-    @GetMapping("/check-car-available/{id}")
-    public ClientResponse checkIfCarAvailable(@PathVariable UUID id){
-        return service.checkIfCarAvailable(id);
+    @GetMapping("/check-car-available/{carId}")
+    public ClientResponse checkIfCarAvailable(@PathVariable UUID carId){
+        return service.checkIfCarAvailable(carId);
     }
 
 }

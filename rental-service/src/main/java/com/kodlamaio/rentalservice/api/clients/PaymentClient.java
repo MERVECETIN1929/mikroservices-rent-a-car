@@ -7,8 +7,8 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(name="payment-service2")
+@FeignClient(name="payment-service2",fallback=PaymentClientFallBack.class)
 public interface PaymentClient {
-    @PostMapping("api/payments/make-payment")
+    @PostMapping("/api/payments/check")
     ClientResponse makePayment(@RequestBody PaymentRentalRequest payment);
 }

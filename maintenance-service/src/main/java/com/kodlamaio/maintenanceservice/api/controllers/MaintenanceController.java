@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.UUID;
 @AllArgsConstructor
 @RestController
-@RequestMapping("api/maintenances")
+@RequestMapping("/api/maintenances")
 public class MaintenanceController {
     private final MaintenanceService service;
     @GetMapping
@@ -42,7 +42,7 @@ public class MaintenanceController {
     public void delete(@PathVariable UUID id){
         service.delete(id);
     }
-    @PutMapping("/{carId}")
+    @PutMapping("/return")
     public void returnTheCarFromMaintenance(@RequestParam UUID carId){
         service.returnTheCarFromMaintenance(carId);
     }
