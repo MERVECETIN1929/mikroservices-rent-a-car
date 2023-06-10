@@ -1,6 +1,7 @@
 package com.kodlamaio.inventoryservice.business.concretes;
 
 import com.kodlamaio.commonpackage.events.inventory.BrandDeletedEvent;
+import com.kodlamaio.commonpackage.kafka.producer.KafkaProducer;
 import com.kodlamaio.commonpackage.utils.mappers.ModelMapperService;
 import com.kodlamaio.inventoryservice.business.abstracts.BrandService;
 import com.kodlamaio.inventoryservice.business.dto.request.create.CreateBrandRequest;
@@ -9,7 +10,6 @@ import com.kodlamaio.inventoryservice.business.dto.response.create.CreateBrandRe
 import com.kodlamaio.inventoryservice.business.dto.response.get.GetAllBrandsResponse;
 import com.kodlamaio.inventoryservice.business.dto.response.get.GetBrandResponse;
 import com.kodlamaio.inventoryservice.business.dto.response.update.UpdateBrandResponse;
-import com.kodlamaio.inventoryservice.business.kafka.producer.InventoryProducer;
 import com.kodlamaio.inventoryservice.business.rules.BrandBusinessRules;
 import com.kodlamaio.inventoryservice.entities.Brand;
 import com.kodlamaio.inventoryservice.repository.BrandRepository;
@@ -25,7 +25,7 @@ public class BrandManager implements BrandService {
     private final BrandRepository repository;
     private final ModelMapperService mapper;
     private final BrandBusinessRules rules;
-    private final InventoryProducer producer;
+    private final KafkaProducer producer;
     @Override
     public List<GetAllBrandsResponse> getAll() {
         var brands=repository.findAll();
@@ -68,5 +68,5 @@ public class BrandManager implements BrandService {
     }
     private void sendKafkaBrandDeletedEvent(UUID brandId){
         var event=new BrandDeletedEvent(brandId);
-        producer.sendMessage(event);    }
+        producer.sendMessage(event,"brand-deleted");    }
 }

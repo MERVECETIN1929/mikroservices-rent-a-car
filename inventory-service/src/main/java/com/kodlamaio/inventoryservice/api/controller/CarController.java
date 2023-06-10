@@ -35,8 +35,8 @@ public class CarController {
         return service.getAll();
     }
     @GetMapping("/{id}")
-    //@PostAuthorize("hasRole('admin') || returnObject.modelYear == 2019")
-    public GetCarResponse getById(@PathVariable  UUID id, @AuthenticationPrincipal Jwt jwt){
+    //@PostAuthorize("hasRole('admin') || returnObject.modelYear == 2019") , @AuthenticationPrincipal Jwt jwt
+    public GetCarResponse getById(@PathVariable  UUID id){
         return service.getById(id);
     }
     @PutMapping("/{id}")

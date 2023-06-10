@@ -1,5 +1,6 @@
 package com.kodlamaio.inventoryservice.business.rules;
 
+import com.kodlamaio.commonpackage.utils.constans.Message;
 import com.kodlamaio.commonpackage.utils.exceptions.BusinessException;
 import com.kodlamaio.inventoryservice.entities.enums.State;
 import com.kodlamaio.inventoryservice.repository.CarRepository;
@@ -15,13 +16,13 @@ public class CarBusinessRules {
     public void checkIfCarExists(UUID id){
         if(!repository.existsById(id)){
             //todo bussinesExceptions
-            throw new BusinessException("CAR_NOT_EXISTS");
+            throw new BusinessException(Message.Car.NotExists);
         }
     }
     public void checkCarAvailability(UUID id){
         var car=repository.findById(id).orElseThrow();
         if(!car.getState().equals(State.Available)){
-            throw new BusinessException("CAR_NOT_AVAİLABLE");
+            throw new BusinessException(Message.Rental.CarNotAvailable);
         }
     }
 }

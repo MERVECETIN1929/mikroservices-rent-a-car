@@ -6,6 +6,7 @@ import com.kodlamaio.invoiceservice.business.abstracts.InvoiceService;
 import com.kodlamaio.invoiceservice.business.dto.CreateInvoiceResponse;
 import com.kodlamaio.invoiceservice.business.dto.GetAllInvoicesResponse;
 import com.kodlamaio.invoiceservice.business.dto.GetInvoiceResponse;
+import com.kodlamaio.invoiceservice.business.rules.InvoiceBusinessRules;
 import com.kodlamaio.invoiceservice.entities.Invoice;
 import com.kodlamaio.invoiceservice.repository.InvoiceRepository;
 import lombok.AllArgsConstructor;
@@ -20,16 +21,18 @@ import java.util.UUID;
 public class InvoiceManager implements InvoiceService {
     private final ModelMapperService mapper;
     private final InvoiceRepository repository;
-
+    private final InvoiceBusinessRules rules;
     @Override
     public GetInvoiceResponse getById(UUID id) {
-        //todo: business rules
-        var invoice=mapper.forResponse().map(repository.findById(id).orElseThrow(),GetInvoiceResponse.class);
+        rules.checkIfInvoiceExists(id);
+        var data=repository.findById(id);
+        var invoice=mapper.forResponse().map(data,GetInvoiceResponse.class);
         return invoice;
     }
 
     @Override
     public void delete(UUID id) {
+        rules.checkIfInvoiceExists(id);
         repository.deleteById(id);
     }
 

@@ -3,6 +3,7 @@ package com.kodlamaio.rentalservice.business.concretes;
 import com.kodlamaio.commonpackage.events.Event;
 import com.kodlamaio.commonpackage.events.invoice.InvoiceCreatedEvent;
 import com.kodlamaio.commonpackage.events.rental.RentalCreatedEvent;
+import com.kodlamaio.commonpackage.events.rental.RentalDeletedEvent;
 import com.kodlamaio.commonpackage.kafka.producer.KafkaProducer;
 import com.kodlamaio.commonpackage.utils.dto.request.PaymentRentalRequest;
 import com.kodlamaio.commonpackage.utils.dto.response.ClientCarResponse;
@@ -20,6 +21,8 @@ import com.kodlamaio.rentalservice.business.rules.RentalBusinessRules;
 import com.kodlamaio.rentalservice.entities.Rental;
 import com.kodlamaio.rentalservice.repository.RentalRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -29,7 +32,6 @@ import java.util.UUID;
 
 @Service
 @AllArgsConstructor
-
 public class RentalManager implements RentalService {
     private final RentalRepository repository;
     private final ModelMapperService mapper;
@@ -46,7 +48,7 @@ public class RentalManager implements RentalService {
     @Override
     public GetRentalResponse getById(UUID id) {
         rules.checkIfRentalExists(id);
-        var rental=repository.findById(id).orElseThrow();
+        var rental=repository.findById(id);
         var response=mapper.forResponse().map(rental, GetRentalResponse.class);
         return response;
     }
@@ -57,17 +59,20 @@ public class RentalManager implements RentalService {
         rules.ensureCarIsAvailable(request.getCarId());
         Rental rental=mapper.forRequest().map(request, Rental.class);
         rental.setRentedAt(LocalDate.now());
-        rental.setId(UUID.randomUUID());
+        rental.setId(UUID.randomUUID());// todo null
         rental.setTotalPrice(getTotalPrice(rental));
+
         PaymentRentalRequest rentalRequest=mapper.forRequest().map(request.getPaymentRequest(),PaymentRentalRequest.class);
         rentalRequest.setPrice(rental.getTotalPrice());
         rules.makeRentalPayment(rentalRequest);
         var save=repository.save(rental);
+        sendKafkaRentalCreatedEvent(request.getCarId());
+
         // fatura için bilgiler iletilmeli ancak bazı veriler için carClientten istek atmalı ve aracın verilerine erişmeliyiz.
         var event=setUpCreateInvoiceEvent(request,rental);
         sendKafkaEvent(event,"invoice-created");
-        sentKafkaRentalEvent(request.getCarId());
         var response=mapper.forResponse().map(save, CreateRentalResponse.class);
+
         return response;
     }
 
@@ -85,14 +90,13 @@ public class RentalManager implements RentalService {
     public void delete(UUID id) {
         rules.checkIfRentalExists(id);
         repository.deleteById(id);
-
+        // rentaldan veri silindiği zaman inventory ve filtere event fırlatmalı ve aracın durumunu değiştirmeli
+        sendKafkaRentalDeletedEvent(id);
     }
     private double getTotalPrice(Rental rental){
         return rental.getDailyPrice()*rental.getRentedForDays();
     }
-    public void sentKafkaRentalEvent(UUID carId){
-        producer.sendMessage(new RentalCreatedEvent(carId),"rental-created");
-    }
+
     private InvoiceCreatedEvent setUpCreateInvoiceEvent(CreateRentalRequest request,Rental rental){
         InvoiceCreatedEvent event=new InvoiceCreatedEvent();
         ClientCarResponse car=carClient.getCarById(request.getCarId());
@@ -107,6 +111,13 @@ public class RentalManager implements RentalService {
         event.setModelName(car.getModelName());
         return event;
     }
+    public void sendKafkaRentalCreatedEvent(UUID carId){
+        producer.sendMessage(new RentalCreatedEvent(carId),"rental-created");
+    }
+    public void sendKafkaRentalDeletedEvent(UUID carId){
+        producer.sendMessage(new RentalDeletedEvent(carId),"rental-deleted");
+    }
+
     private void sendKafkaEvent(Event event,String topic){
         producer.sendMessage(event,topic);
     }

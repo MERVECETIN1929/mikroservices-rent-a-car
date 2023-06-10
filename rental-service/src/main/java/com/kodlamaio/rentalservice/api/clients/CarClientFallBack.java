@@ -18,7 +18,6 @@ import java.util.UUID;
  @Retry(name="default")*/
 public class CarClientFallBack implements CarClient{
     @Override
-
     public ClientResponse checkIfCarAvailable(UUID carId)  {
         log.info("inventory service is down");
         throw new BusinessException("INVENTORY SERVICE NOT AVAILABLE RIGHT NOW");

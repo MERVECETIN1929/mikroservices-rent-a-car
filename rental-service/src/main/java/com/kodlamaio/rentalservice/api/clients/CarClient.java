@@ -11,11 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import java.util.UUID;
 
 @FeignClient(name="inventory-service",fallback = CarClientFallBack.class)//inventory service için çalışacak opsiyonel
-
 public interface CarClient {
-
     @Retry(name="default")
-    //@CircuitBreaker(name="inventory-service",fallbackMethod = "checkIfCarAvailable")
     @GetMapping(value="/api/cars/check-car-available/{carId}")
     ClientResponse checkIfCarAvailable(@PathVariable UUID carId);
     @GetMapping(value="/api/cars/{carId}")

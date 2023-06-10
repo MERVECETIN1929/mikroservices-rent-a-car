@@ -1,5 +1,6 @@
 package com.kodlamaio.maintenanceservice.business.rules;
 
+import com.kodlamaio.commonpackage.utils.constans.Message;
 import com.kodlamaio.commonpackage.utils.dto.response.ClientResponse;
 import com.kodlamaio.commonpackage.utils.exceptions.BusinessException;
 import com.kodlamaio.maintenanceservice.api.clients.CarClient;
@@ -16,18 +17,18 @@ public class MaintenanceBusinessRules {
     private final CarClient carClient;
     public void existsMaintenanceById(UUID id){
         if(!maintenanceRepository.existsMaintenanceById(id)){
-            throw new BusinessException("Maintenance is not exists.");
+            throw new BusinessException(Message.Maintenance.NotExists);
         }
     }
     public void checkCarAvailabilityForMaintenance(UUID carId){
         ClientResponse clientResponse=carClient.checkIfCarAvailable(carId);
         if(!clientResponse.isSuccess()){
-            throw new BusinessException("Car is not available.");
+            throw new BusinessException(clientResponse.getMessage());
         }
     }
     public void checkCarInMaintenanceAndRepairedFalse(UUID carId){
         if(!maintenanceRepository.existsMaintenanceByCarIdAndIsRepairedFalse(carId)){
-            throw new BusinessException("Car is not maintenance");
+            throw new BusinessException(Message.Maintenance.CarNotExists);
         }
     }
 }

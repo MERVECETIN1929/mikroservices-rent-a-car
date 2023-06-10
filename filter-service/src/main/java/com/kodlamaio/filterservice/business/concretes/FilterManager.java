@@ -33,7 +33,6 @@ public class FilterManager implements FilterService {
 
     @Override
     public void add(Filter filter) {
-
         repository.save(filter);
     }
 

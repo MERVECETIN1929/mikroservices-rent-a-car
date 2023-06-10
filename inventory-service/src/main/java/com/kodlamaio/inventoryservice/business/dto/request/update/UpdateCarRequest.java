@@ -18,16 +18,16 @@ import java.util.UUID;
 public class UpdateCarRequest {
     @Min(value = 2000)
     private int modelYear;
-    @NotNull
+
     @NotBlank
     // TODO: Add Regex
     private String plate;
     @Min(value = 1)
     private double dailyPrice;
     @NotNull
-    @NotBlank
+
     private UUID modelId;
     @NotNull
-    @NotBlank
+
     private State state;
 }
